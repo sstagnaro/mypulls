@@ -1,6 +1,6 @@
 # mypulls
 
-This playbook is intended to be run with ansible-pull on the control node where enterpirse playbook are executed.
+This playbook is intended to be run with `ansible-pull` on the control node where playbooks are usually executed.
 
 The goal is to check against Git repos and pull them on a specific path in the control node.
 
