@@ -18,7 +18,7 @@
     - name: Pull repos or clone them if not already present
       git:
         repo: "{{ git_prefix }}{{ item }}.git"
-        dest: 
+        dest: "{{ item }}"
         clone: true
         update: true
       loop: "{{ git_repos }}"
