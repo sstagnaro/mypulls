@@ -11,7 +11,6 @@
 # to perform periodic update checks
 ---
 - name: Check if Ansible projects are up to date
-  hosts: localhost
 
   vars:
     git_prefix: https://github.com/sstagnaro
