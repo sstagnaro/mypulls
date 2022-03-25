@@ -1,3 +1,15 @@
+# This playbook is intended to be run with ansible-pull
+# on the control node where enterpirse playbook are executed
+#
+# The goal is to check against Git repos and pull them
+# on a specific path in the control node
+#
+# Usage:
+# ansible-pull --url https://git.example.com/pull_prj pull_repos.yml
+#
+# The above command can be scheduled in the crontab
+# to perform periodic update checks
+---
 - name: Check if Ansible projects are up to date
   hosts: localhost
 
@@ -22,3 +34,4 @@
         clone: true
         update: true
       loop: "{{ git_repos }}"
+...
