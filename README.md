@@ -6,7 +6,7 @@ The goal is to check against Git repos and pull them on a specific path in the c
 
 ### Usage:
 
-ansible-pull --url https://git.example.com/pull_prj
+	ansible-pull --url https://git.example.com/pull_prj
 
 The above command can be scheduled in the crontab to perform periodic update checks.
 
