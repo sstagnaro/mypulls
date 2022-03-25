@@ -1,0 +1,24 @@
+- name: Check if Ansible projects are up to date
+  hosts: localhost
+
+  vars:
+    git_prefix: https://github.com/sstagnaro/
+    git_repos:
+      - rht-contrib
+      - epics-dispatcher-rhel8
+      - postgres-gis
+    repos_path: repos/
+
+  tasks:
+    - name: Check {{ repos_path}} directory
+      file:
+        path: "{{ repos_path}}"
+        state: directory
+
+    - name: Pull repos or clone them if not already present
+      git:
+        repo: "{{ git_prefix }}{{ item }}.git"
+        dest: 
+        clone: true
+        update: true
+      loop: "{{ git_repos }}"
