@@ -2,12 +2,12 @@
   hosts: localhost
 
   vars:
-    git_prefix: https://github.com/sstagnaro/
+    git_prefix: https://github.com/sstagnaro
     git_repos:
       - rht-contrib
       - epics-dispatcher-rhel8
       - postgres-gis
-    repos_path: repos/
+    repos_path: /home/sstagnaro/repos
 
   tasks:
     - name: Check {{ repos_path}} directory
@@ -17,8 +17,8 @@
 
     - name: Pull repos or clone them if not already present
       git:
-        repo: "{{ git_prefix }}{{ item }}.git"
-        dest: "{{ item }}"
+        repo: "{{ git_prefix }}/{{ item }}.git"
+        dest: "{{ repos_path }}/{{ item }}"
         clone: true
         update: true
       loop: "{{ git_repos }}"
