@@ -1,8 +1,6 @@
 # mypulls
 
-This playbook is intended to be run with `ansible-pull` on the control node where playbooks are usually executed.
-
-The goal is to check against Git repos and pull them on a specific path in the control node.
+Various playbooks intended to be used with `ansible-pull`.
 
 ### Usage:
 

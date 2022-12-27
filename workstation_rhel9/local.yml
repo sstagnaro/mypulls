@@ -5,12 +5,13 @@
 # packages and configurations.
 #
 # Usage:
-# ansible-pull --url https://git.example.com/local.yml
+# ansible-pull --url https://git.example.com/workstation_rhel9
 #
 # The above command can be scheduled in the crontab
 # to perform periodic update checks
 #
 # N.B.: playbook name has to be left to local.yml
+# or playbook name has to be specified.
 ---
 - name: RHEL 9 Laptop setup
   hosts: localhost

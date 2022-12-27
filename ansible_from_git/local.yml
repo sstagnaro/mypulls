@@ -5,12 +5,13 @@
 # on a specific path in the control node
 #
 # Usage:
-# ansible-pull --url https://git.example.com/pull_prj
+# ansible-pull --url https://git.example.com/ansible_from_git
 #
 # The above command can be scheduled in the crontab
 # to perform periodic update checks
 # 
 # N.B.: playbook name has to be left to local.yml
+# or playbook name has to be specified.
 ---
 - name: Check if Ansible projects are up to date
   hosts: localhost
