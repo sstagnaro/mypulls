@@ -1,0 +1,133 @@
+# This playbook is intended to be run with ansible-pull
+# just after teh RHEL 9 installation is completed.
+#
+# The goal is to provision a workstation with the desired
+# packages and configurations.
+#
+# Usage:
+# ansible-pull --url https://git.example.com/local.yml
+#
+# The above command can be scheduled in the crontab
+# to perform periodic update checks
+#
+# N.B.: playbook name has to be left to local.yml
+---
+- name: RHEL 9 Laptop setup
+  hosts: localhost
+  become: true
+  gather_facts: false
+
+  vars:
+    rhsm_repos:
+      - rhel-9-for-x86_64-baseos-rpms
+      - rhel-9-for-x86_64-appstream-rpms
+      - codeready-builder-for-rhel-9-x86_64-rpms
+
+    rpm_repos:
+      - 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm'
+      - 'https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm'
+      - 'https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm'
+
+    dnf_packages:
+      - NetworkManager-openvpn
+      - NetworkManager-openvpn-gnome
+      - ansible
+      - ffmpeg
+      - flatpak
+      - gimp
+      - git
+      - gnome-tweaks
+      - gnome-extensions-app
+      - gstreamer1-libav
+      - podman
+      - wireshark
+
+    flatpak_repos:
+      - name: flathub
+        url: 'https://flathub.org/repo/flathub.flatpakrepo'
+
+    flatpak_packages:
+      - com.belmoussaoui.Authenticator
+      - com.bluejeans.BlueJeans
+      - com.google.Chrome
+      - com.microsoft.Teams
+      - com.visualstudio.code
+      - org.gnome.World.Secrets
+      - org.pulseaudio.pavucontrol
+      - org.telegram.desktop
+      - org.videolan.VLC
+      - us.zoom.Zoom
+
+  tasks:
+    - name: DNF repos to be enabled from RHSM
+      community.general.rhsm_repository:
+        name: "{{ rhsm_repos }}"
+        state: enabled
+
+    - name: DNF repos to be enabled from RPM
+      dnf:
+        name: "{{ rpm_repos }}"
+        state: present
+
+    - name: DNF packages to be upgraded from repos
+      dnf:
+        name: '*'
+        state: latest
+
+    - name: DNF packages to be installed from repos
+      dnf:
+        name: "{{ dnf_packages }}"
+        state: present
+
+    - name: Flatpak repos to be enabled
+      community.general.flatpak_remote:
+        name: "{{ item.name }}"
+        state: present
+        flatpakrepo_url: "{{ item.url }}"
+        method: system
+      loop: "{{ flatpak_repos }}"
+
+    - name: Flatpak packages to be installed
+      community.general.flatpak:
+        name: "{{ flatpak_packages }}"
+        state: present
+        method: system
+
+- name: User settings
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    bashrc_d_files:
+      - content: |
+          export EDITOR=vim
+        filename: editor
+
+    vimrc_content: |  
+      autocmd FileType yaml setlocal ai et ts=2 sw=2 sts=0 nu cuc
+      autocmd FileType yaml color slate
+
+  tasks:
+    - name: ensure .bashrc.d exists
+      file:
+        path: ~/.bashrc.d
+        state: directory
+        mode: '0700'
+
+    - name: ensure specific aliases and functions exists
+      copy:
+        content: "{{ item.content }}"
+        dest: ~/.bashrc.d/{{ item.filename }}
+      loop: "{{ bashrc_d_files }}"
+
+    - name: vimrc settings
+      copy:
+        content: "{{ vimrc_content }}"
+        dest: ~/.vimrc
+
+    # TODO:
+    # - add Red Hat vpn
+    # - add customers vpns
+    # - restore backups
+...
