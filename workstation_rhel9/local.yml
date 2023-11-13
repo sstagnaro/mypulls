@@ -61,8 +61,8 @@
       - org.videolan.VLC
       - us.zoom.Zoom
 
-    pip_packages:
-      - psutil>4.0
+    pip_packages: # used by Ansible own version of pip
+      - psutil>4.0 # needed by community.general.dconf
 
   tasks:
     - name: DNF repos to be enabled from RHSM
