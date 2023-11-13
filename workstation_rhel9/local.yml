@@ -33,6 +33,7 @@
       - NetworkManager-openvpn
       - NetworkManager-openvpn-gnome
       - ansible
+      - bash-completion
       - ffmpeg
       - flatpak
       - gimp
@@ -105,6 +106,10 @@
           export EDITOR=vim
         filename: editor
 
+    dconf_settings:
+      - key: '/org/gnome/desktop/interface/gtk-theme'
+        value: 'Adwaita-dark'
+
     vimrc_content: |  
       autocmd FileType yaml setlocal ai et ts=2 sw=2 sts=0 nu cuc
       autocmd FileType yaml color slate
@@ -126,6 +131,13 @@
       copy:
         content: "{{ vimrc_content }}"
         dest: ~/.vimrc
+
+    - name: Read currently available keyboard layouts in Cinnamon
+      community.general.dconf:
+        key: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+      loop: "{{ dconf_settings }}"
 
     # TODO:
     # - add Red Hat vpn
