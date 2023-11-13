@@ -42,6 +42,7 @@
       - gnome-extensions-app
       - gstreamer1-libav
       - podman
+      - python3.11-pip
       - wireshark
 
     flatpak_repos:
@@ -59,6 +60,9 @@
       - org.telegram.desktop
       - org.videolan.VLC
       - us.zoom.Zoom
+
+    pip_packages:
+      - psutil>4.0
 
   tasks:
     - name: DNF repos to be enabled from RHSM
@@ -80,6 +84,10 @@
       dnf:
         name: "{{ dnf_packages }}"
         state: present
+
+    - name: Pip packages to be installed
+      pip:
+        name: "{{ pip_packages }}"
 
     - name: Flatpak repos to be enabled
       community.general.flatpak_remote:
@@ -108,7 +116,7 @@
 
     dconf_settings:
       - key: '/org/gnome/desktop/interface/gtk-theme'
-        value: 'Adwaita-dark'
+        value: '"Adwaita-dark"'
 
     vimrc_content: |  
       autocmd FileType yaml setlocal ai et ts=2 sw=2 sts=0 nu cuc
@@ -132,7 +140,7 @@
         content: "{{ vimrc_content }}"
         dest: ~/.vimrc
 
-    - name: Read currently available keyboard layouts in Cinnamon
+    - name: dconf settings
       community.general.dconf:
         key: "{{ item.key }}"
         value: "{{ item.value }}"
