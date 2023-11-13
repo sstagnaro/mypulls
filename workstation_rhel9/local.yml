@@ -117,6 +117,8 @@
     dconf_settings:
       - key: '/org/gnome/desktop/interface/gtk-theme'
         value: '"Adwaita-dark"'
+      - key: '/org/gnome/desktop/interface/monospace-font-name'
+        value: '"Source Code Pro 11"'
 
     vimrc_content: |  
       autocmd FileType yaml setlocal ai et ts=2 sw=2 sts=0 nu cuc
