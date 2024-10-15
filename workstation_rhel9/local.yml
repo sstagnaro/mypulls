@@ -88,6 +88,7 @@
     - name: Pip packages to be installed
       pip:
         name: "{{ pip_packages }}"
+        executable: pip3.11
 
     - name: Flatpak repos to be enabled
       community.general.flatpak_remote:
