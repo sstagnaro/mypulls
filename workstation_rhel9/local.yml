@@ -51,9 +51,7 @@
 
     flatpak_packages:
       - com.belmoussaoui.Authenticator
-      - com.bluejeans.BlueJeans
       - com.google.Chrome
-      - com.microsoft.Teams
       - com.visualstudio.code
       - org.gnome.World.Secrets
       - org.pulseaudio.pavucontrol
